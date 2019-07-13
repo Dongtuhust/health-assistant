@@ -1,0 +1,69 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="icon" href="http://www.thuthuatweb.net/wp-content/themes/HostingSite/favicon.ico" type="image/x-ico">
+    <title>Biểu đồ huyết áp nhịp tim</title>
+</head>
+<body>
+    <div class="container" style="max-width: 1000px;overflow: auto">
+        <canvas id="myChart" width="600" height="300">{{ a }}</canvas>
+    </div>
+</body>
+<script src="{% static 'js/Chart.js' %}"></script>
+<script src="{% static 'js/jquery.js' %}"></script>
+<script>
+    var dt = new Date();
+    var h = dt.getHours();
+    var m = dt.getMinutes();
+    var tmp = 0;
+    var arr = [];
+    while (m>0){
+        arr.push(h+":"+m);
+        m--;
+        tmp ++;
+        if (tmp===15){
+            break;
+        }
+        if (m===0){
+            h--;
+            m=60;
+        }
+    }
+    var labels = [];
+    for (var i=14;i>0;i--) {
+        labels.push(arr[i]);
+    }
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Nhịp tim',
+            data: [90, 91, 92, 95, 98, 120, 121, 119, 118, 116, 92, 91, 90, 95, 96, 98,],
+            backgroundColor: [
+                'rgba(217, 237, 247, 1)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+            ],
+            borderWidth: 1
+        }],
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    {#beginAtZero: true#}
+                    suggestedMin: 75,
+                }
+            }]
+        }
+    }
+});
+</script>
+</html>

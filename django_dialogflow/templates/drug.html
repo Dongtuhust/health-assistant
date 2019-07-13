@@ -1,0 +1,118 @@
+{% load staticfiles %}
+<html>
+<head>
+    <title>Thêm lịch trình</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    .schedule {
+        cursor: pointer;
+        font-size: 1.5em;
+    }
+    .schedule.hover {
+        color: #2e6da4;
+    }
+</style>
+<body>
+
+<div class="container">
+    <div class="page-header text-center">
+        <h1>Thêm lịch trình</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+            <div class="row schedule">
+                <i class="far fa-plus-square"></i>Thêm lịch trình sử dụng thuốc
+            </div>
+            <div class="row schedule">
+                <i class="far fa-plus-square"></i>Thêm lịch trình khám chữa bệnh
+            </div>
+            <div class="row schedule">
+                <i class="far fa-plus-square"></i>Thêm lịch trình tập thể dục
+            </div>
+        </div>
+        <div class="col-xs-6 col-xs-offset-3">
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/js.cookie.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script>
+    var $chatlog = $('.js-chat-log');
+    var $input = $('.js-text');
+    var $sayButton = $('.js-say');
+    var dialogflowUrl = '{% url "index" %}';
+    var csrftoken = Cookies.get('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    function createRow(text) {
+        var $row = $('<li class="list-group-item"></li>');
+        var list = '<li class="list-group-item">'
+        var k = text.split("\n")
+
+        for (i = 0; i < k.length; i++) {
+            list += k[i] + "<br />"
+        }
+
+        list = list + "</li>"
+        $row.text(list);
+        $chatlog.append(list);
+    }
+
+    window.onload = createRow('<b><font size="4" face="Lucida Console">Chat with Dialogflow</font></b>');
+
+    function submitInput() {
+        var inputData = {
+            'text': $input.val()
+        }
+        // Display the user's input on the web page
+        createRow(inputData.text);
+        var dialogflowChatUrl = '{% url "chat" %}';
+        var $submit = $.ajax({
+            type: 'POST',
+            url: dialogflowChatUrl,
+            data: JSON.stringify(inputData),
+            contentType: 'application/json'
+        });
+
+        $submit.done(function (statement) {
+            createRow(statement.text);
+            // Clear the input field
+            $input.val('');
+        });
+
+        $submit.fail(function () {
+            // TODO: Handle errors
+        });
+    }
+
+    $sayButton.click(function () {
+        submitInput();
+    });
+
+    $input.keydown(function (event) {
+        // Submit the input when the enter button is pressed
+        if (event.keyCode == 13) {
+            submitInput();
+        }
+    });
+</script>
+</body>
+</html>
