@@ -22,6 +22,11 @@ def convert(data):
 
 @require_http_methods(['GET'])
 def index_view(request):
+    return render(request, 'app.html')
+
+
+@require_http_methods(['GET'])
+def drug_view(request):
     return render(request, 'drug.html')
 
 

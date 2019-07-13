@@ -1,107 +1,139 @@
 {% load staticfiles %}
 <html>
-  <head>
-    <title>Django Dialogflow</title>
+<head>
+    <title>Trợ lý chăm sóc người già</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/custom.css' %}"/>
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
 
-    <div class="container">
-      <div class="page-header text-center">
-        <h1>Django Dialogflow</h1>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-6 col-xs-offset-3">
-          <ul class="list-group js-chat-log">
-          </ul>
-
-          <div class="input-group input-group-lg">
-            <input type="text" class="form-control js-text" placeholder="Type something to begin..."/>
-            <span class="input-group-btn">
-              <button class="btn btn-primary js-say">Submit</button>
-            </span>
-          </div>
-          
-        </div>
-      </div>
+<div class="container">
+    <div class="page-header text-center">
+        <h1>Trợ lý chăm sóc người già</h1>
     </div>
 
-    <script src="{% static 'js/jquery.js' %}"></script>
-    <script src="{% static 'js/js.cookie.js' %}"></script>
-    <script src="{% static 'js/bootstrap.js' %}"></script>
-    <script>
-      var $chatlog = $('.js-chat-log');
-      var $input = $('.js-text');
-      var $sayButton = $('.js-say');
-      var dialogflowUrl = '{% url "index" %}';
-      var csrftoken = Cookies.get('csrftoken');
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+            <ul class="list-group js-chat-log" style="max-height: 150px;overflow: auto">
+            </ul>
 
-      function csrfSafeMethod(method) {
+            <div class="input-group input-group-lg">
+                <input id="note-textarea" type="text" class="form-control js-text"
+                       placeholder="Nhập chữ hoặc chọn mic giọng nói..."/>
+                <span class="input-group-btn">
+              <button class="btn btn-primary js-say"><i class="fas fa-microphone-alt">Gửi</i></button>
+            </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <img src="{% static 'image/voice.png' %}" id="voice-micro" class="voice-img start-record-btn">
+    </div>
+</div>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/js.cookie.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script>
+    var $chatlog = $('.js-chat-log');
+    var $input = $('.js-text');
+    var $sayButton = $('.js-say');
+    var dialogflowUrl = '{% url "index" %}';
+    var csrftoken = Cookies.get('csrftoken');
+
+    function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-      }
+    }
 
-      $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-          }
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
         }
-      });
+    });
 
-      function createRow(text) {
+    function createRow(text) {
         var $row = $('<li class="list-group-item"></li>');
         var list = '<li class="list-group-item">'
         var k = text.split("\n")
 
-        for(i=0;i<k.length;i++) {
-            list += k[i]+"<br />"
+        for (i = 0; i < k.length; i++) {
+            list += k[i] + "<br />"
         }
 
         list = list + "</li>"
         $row.text(list);
         $chatlog.append(list);
-      }
+    }
 
-      window.onload = createRow('<b><font size="4" face="Lucida Console">Chat with Dialogflow</font></b>');
+    window.onload = createRow('<b><font size="4" face="Lucida Console">Trò chuyện với trợ lý</font></b>');
 
-      function submitInput() {
+    var audioElement = document.createElement('audio');
+    audioElement.setAttribute('src', "https://static.openfpt.vn/text2speech-v5/male.0.0a9e6af5e33f56e813449df8ab90871c.mp3");
+    audioElement.play();
+
+    var voice = ["male", "female"]
+    voice = voice[Math.floor(Math.random() * voice.length)];
+    console.log(voice);
+
+    function submitInput(e) {
         var inputData = {
-          'text': $input.val()
+            'text': $input.val()
         }
         // Display the user's input on the web page
         createRow(inputData.text);
         var dialogflowChatUrl = '{% url "chat" %}';
         var $submit = $.ajax({
-          type: 'POST',
-          url: dialogflowChatUrl,
-          data: JSON.stringify(inputData),
-          contentType: 'application/json'
+            type: 'POST',
+            url: dialogflowChatUrl,
+            data: JSON.stringify(inputData),
+            contentType: 'application/json'
         });
-
-        $submit.done(function(statement) {
+        $submit.done(function (statement) {
             createRow(statement.text);
+            $.ajax({
+                type: 'POST',
+                url: "https://api.fpt.ai/hmi/tts/v5",
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "api_key": "Q0wj0MuCZCtaxk5Qdd2q975HIiseAFKH",
+                    "speed": "0",
+                    "voice": voice,
+                },
+                data: statement.text,
+                contentType: 'application/json',
+                success: function (data) {
+                    var audioElement = document.createElement('audio');
+                    audioElement.setAttribute('src', data.async);
+                    audioElement.play();
+                    console.log(data.async);
+
+                }
+            });
             // Clear the input field
             $input.val('');
         });
 
-        $submit.fail(function() {
-          // TODO: Handle errors
+        $submit.fail(function () {
+            // TODO: Handle errors
         });
-      }
+    }
 
-      $sayButton.click(function() {
+    $sayButton.click(function () {
         submitInput();
-      });
+    });
 
-      $input.keydown(function(event) {
+    $input.keydown(function (event) {
         // Submit the input when the enter button is pressed
         if (event.keyCode == 13) {
-          submitInput();
+            submitInput();
         }
-      });
-    </script>
-  </body>
+    });
+</script>
+
+<script src="{% static 'js/speech_to_text.js' %}"></script>
+</body>
 </html>

@@ -1,11 +1,11 @@
 from django.conf.urls import url
 from django.contrib import admin
-from .views import chat_view, index_view, chart_view
+from .views import chat_view, index_view, chart_view, drug_view
 
 urlpatterns = [
     url(r'^chat$', chat_view, name='chat'),
-    # url(r'^$', index_view, name='index'),
+    url(r'^$', index_view, name='index'),
     # url(r'^admin/', admin.site.urls),
-    url(r'^config_schedule_drug', index_view, name='index'),
+    url(r'^config_schedule_drug', drug_view, name='index'),
     url(r'^chart', chart_view, name='index'),
 ]
