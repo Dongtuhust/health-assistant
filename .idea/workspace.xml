@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe0b0cb5-ae0f-4ef5-bd1c-20dbc1e90901" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/django_dialogflow/static/image/voice.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/django_dialogflow/static/js/speech_to_text.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/django_dialogflow/static/css/custom.css" beforeDir="false" afterPath="$PROJECT_DIR$/django_dialogflow/static/css/custom.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/django_dialogflow/templates/app.html" beforeDir="false" afterPath="$PROJECT_DIR$/django_dialogflow/templates/app.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/django_dialogflow/templates/chart_heart.html" beforeDir="false" afterPath="$PROJECT_DIR$/django_dialogflow/templates/chart_heart.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/django_dialogflow/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_dialogflow/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/django_dialogflow/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_dialogflow/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="fe0b0cb5-ae0f-4ef5-bd1c-20dbc1e90901" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,8 +43,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/django_dialogflow/static/js/speech_to_text.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="97">
-              <caret line="62" column="24" selection-start-line="62" selection-start-column="24" selection-end-line="62" selection-end-column="24" />
+            <state relative-caret-position="114">
+              <caret line="63" column="3" lean-forward="true" selection-start-line="63" selection-start-column="3" selection-end-line="63" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -319,12 +309,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1562983828746</updated>
-      <workItem from="1562983829950" duration="44957000" />
+      <workItem from="1562983829950" duration="45556000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44957000" />
+    <option name="totallyTimeSpent" value="45556000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -578,8 +568,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/django_dialogflow/static/js/speech_to_text.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
-          <caret line="62" column="24" selection-start-line="62" selection-start-column="24" selection-end-line="62" selection-end-column="24" />
+        <state relative-caret-position="114">
+          <caret line="63" column="3" lean-forward="true" selection-start-line="63" selection-start-column="3" selection-end-line="63" selection-end-column="3" />
         </state>
       </provider>
     </entry>
